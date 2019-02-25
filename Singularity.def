@@ -12,21 +12,25 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	If your data is on /var/scratch/$USER/, you can bind the directory into the container at for example /data using the -B/--bind option
 	$ singularity exec -B /var/scratch/$USER/:/data ddf-pipeline.simg tier1.cfg
 
-%setup
-	cp -r scripts ${SINGULARITY_ROOTFS}/opt/lofar/
-
 %environment
-	source /opt/lofar/scripts/env.sh
+	export INSTALLDIR=/opt/lofar
+	source ${INSTALLDIR}/scripts/init.lofar.sh
+	source ${INSTALLDIR}/scripts/init.ddf-pipeline.sh
+	export DDF_PIPELINE_CATALOGS=${INSTALLDIR}/DDFCatalogs
 
 %post
 	# Set-up environment
-	source /opt/lofar/scripts/env-vars.sh
+	export LC_ALL=C
+	export INSTALLDIR=/opt/lofar
+	export PYTHON_VERSION=2.7
+	alias make=${INSTALLDIR}/make/bin/make
+	mkdir -p ${INSTALLDIR}/scripts
 
+	# Install system dependencies
 	yum install -y Cython fpack
 
-	cd ${INSTALLDIR}
-
 	# Install ddf-pipeline
+	cd ${INSTALLDIR}
 	git clone --single-branch -b DR1 https://github.com/mhardcastle/ddf-pipeline.git
 
 	# moving init.sh because install.sh also writes to that same file
@@ -35,8 +39,8 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	mv init.sh scripts/init.ddf-pipeline.sh
 
 	# Python dependencies
-	source ${INSTALLDIR}/scripts/env-py-path.sh
-
+	# first set PYTHONPATH
+	source ${INSTALLDIR}/scripts/init.lofar.sh
 	pip install -r DDFacet/requirements.txt
 
 	# Requirements in docs/manual.md
