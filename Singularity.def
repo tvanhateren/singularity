@@ -9,11 +9,12 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	Runtime example:
 	$ singularity exec ddf-pipeline.simg tier1.cfg
 
+	The home directory is already mounted into the container by default.
 	If your data is on /var/scratch/$USER/, you can bind the directory into the container at for example /data using the -B/--bind option
 	$ singularity exec -B /var/scratch/$USER/:/data ddf-pipeline.simg tier1.cfg
 
 %environment
-	export INSTALLDIR=/opt/lofar
+	# INSTALLDIR is already defined in bootstrap image
 	source ${INSTALLDIR}/scripts/init.lofar.sh
 	source ${INSTALLDIR}/scripts/init.ddf-pipeline.sh
 	export DDF_PIPELINE_CATALOGS=${INSTALLDIR}/DDFCatalogs
@@ -55,6 +56,9 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	wget -P DDFCatalogs https://www.extragalactic.info/bootstrap/VLSS.fits
 	wget -P DDFCatalogs https://www.extragalactic.info/bootstrap/wenss.fits
 	# wget -P DDFCatalogs https://www.extragalactic.info/bootstrap/NVSS.fits
+
+		# create init.sh because of the bootstrap image environment
+	touch ${INSTALLDIR}/init.sh
 
 	echo "$(tput setaf 2)> Done installing: $(tput setaf 7)"
 	ls -lah ${INSTALLDIR}
