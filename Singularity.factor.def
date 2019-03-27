@@ -1,0 +1,65 @@
+Bootstrap: docker
+From: ubuntu:cosmic
+
+%help
+
+
+%environment
+	# Set-up environment
+	export LC_ALL=C
+	export INSTALLDIR=/opt/lofar
+
+%post
+	# Set-up environment
+	export LC_ALL=C
+	export INSTALLDIR=/opt/lofar
+	export NCPU=$(nproc --all)
+
+	mkdir -p ${INSTALLDIR}
+
+	apt update
+	apt install -y --no-install-recommends gnupg
+
+	# Add qpid ppa
+	echo 'deb http://ppa.launchpad.net/qpid/released/ubuntu bionic main' > /etc/apt/sources.list.d/qpid.list
+	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A770882
+
+	apt update
+	apt install -y --no-install-recommends \
+		python3-dev git subversion g++ make bison flex cmake wget \
+		libncurses5-dev libreadline-dev gettext-base \
+		libblitz0-dev libboost-dev libboost-regex-dev libboost-date-time-dev libboost-python-dev \
+		libboost-thread-dev libboost-system-dev \
+		libqpidmessaging-dev libxml++2.6-dev libunittest++-dev liblog4cplus-dev \
+		libcfitsio-dev wcslib-dev libhdf5-dev libhdf5-openmpi-dev casacore-dev python3-casacore python-casacore aoflagger-dev \
+		gfortran libopenblas-dev python3-psycopg2 python3-mock python-mock \
+		python2-pip \
+		libpng-dev libfftw3-dev
+
+	ln -s /usr/lib/x86_64-linux-gnu/libboost_python27.so /usr/lib/x86_64-linux-gnu/libboost_python-py27.so
+
+	pip2 install python-monetdb xmlrunner bdsf
+
+	# Casarest
+	mkdir -p ${INSTALLDIR}/Casarest
+	cd ${INSTALLDIR}/Casarest
+	wget https://github.com/casacore/casarest/archive/v1.4.2.tar.gz
+	tar xf 
+	mv casarest-1.4.2/ src
+	mkdir -p build/gnu_opt
+	cd build/gnu_opt
+	cmake ${INSTALLDIR}/Casarest/src
+	make -j $NCPU
+	make install
+
+	# Lofar
+	mkdir -p ${INSTALLDIR}/lofar
+	cd ${INSTALLDIR}/lofar
+	svn checkout https://svn.astron.nl/LOFAR/trunk src
+	mkdir -p build/gnu_opt
+	cd build/gnu_opt
+	cmake ${INSTALLDIR}/lofar/src
+	# make -j $NCPU
+	
+%runscript
+	exec bash "$@"
