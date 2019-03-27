@@ -34,7 +34,7 @@ From: ubuntu:bionic
 		python-casacore python-lofar \
 		python-tk
 
-	# Cleanup apt
+	# Cleanup apt (Don't touch tmp folder as they are bind mounted)
 	rm -rf /var/lib/apt/lists/*
 
 %runscript
