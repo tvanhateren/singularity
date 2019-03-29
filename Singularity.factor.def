@@ -1,7 +1,7 @@
 Bootstrap: shub
 From: tikk3r/lofar-grid-hpccloud:lofar
 # Bootstrap: localimage
-# From: lofar-grid-hpccloud_lofar.sif
+# From: lofar.simg
 
 %post
 	# Set-up environment
@@ -16,7 +16,7 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	pip install --upgrade 'aplpy>=1,<2'
 
 	# Link DPPP into lofar folder
-	ln -s ${INSTALLDIR}/lofar/bin/DPPP ${INSTALLDIR}/DPPP/bin/DPPP
+	ln -s ${INSTALLDIR}/DPPP/bin/DPPP ${INSTALLDIR}/lofar/bin/DPPP
 
 	# Download factor source
 	git clone https://github.com/lofar-astron/factor.git ${INSTALLDIR}/factor
