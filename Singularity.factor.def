@@ -15,11 +15,6 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	# version 2 depends on python3 which breaks compatibility
 	pip install --upgrade 'aplpy>=1,<2'
 
-	# Factor dependency: LSMTool
-	git clone https://github.com/darafferty/LSMTool.git ${INSTALLDIR}/LSMTool
-	cd ${INSTALLDIR}/LSMTool
-	python setup.py install
-
 	# Download factor source
 	git clone https://github.com/lofar-astron/factor.git ${INSTALLDIR}/factor
 	cd ${INSTALLDIR}/factor
