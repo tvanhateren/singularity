@@ -1,0 +1,13 @@
+diff --git a/utils/get_cat.py b/utils/get_cat.py
+index 5896cc1..db45c80 100644
+--- a/utils/get_cat.py
++++ b/utils/get_cat.py
+@@ -41,7 +41,7 @@ def get_cat(method):
+         if method=='panstarrs':
+             while True:
+                 try:
+-                    r = requests.post('http://archive.stsci.edu/panstarrs/search.php', data = {'ra':p[0],'dec':p[1],'SR':CSIZE,'max_records':100000,'nDetections':">+5",'action':'Search','selectedColumnsCsv':'objid,ramean,decmean'},timeout=300)
++                    r = requests.post('https://catalogs.mast.stsci.edu/api/v0.1/panstarrs/dr1/mean.votable', data = {'ra':p[0],'dec':p[1],'radius':CSIZE,'pagesize':100000,'nDetections.gte':"5",'action':'Search','columns':'[objid,ramean,decmean]'},timeout=300)
+                 except requests.exceptions.Timeout:
+                     print 'Timeout, retrying!'
+                 else:

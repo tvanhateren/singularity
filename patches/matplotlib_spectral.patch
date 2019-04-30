@@ -1,0 +1,13 @@
+diff --git a/scripts/analyse_logs.py b/scripts/analyse_logs.py
+index 3a2e5f5..66fd739 100755
+--- a/scripts/analyse_logs.py
++++ b/scripts/analyse_logs.py
+@@ -49,7 +49,7 @@ for i in range(len(labels)):
+ tt=np.sum(sums)
+ print '---------------------------------\n\nTotal time %.0f seconds -- %.2f days' % (tt,tt/86400.0)
+ 
+-cmap = plt.cm.spectral
++cmap = plt.cm.get_cmap("Spectral")
+ colors = cmap(np.linspace(0.1, 1., len(pl)))
+ 
+ fig1, ax1 = plt.subplots()

@@ -34,6 +34,14 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	cd ${INSTALLDIR}
 	git clone --single-branch -b DR1 https://github.com/mhardcastle/ddf-pipeline.git
 
+	# Apply patches to ddf-pipeline
+	cd ${INSTALLDIR}
+	git clone https://github.com/tvanhateren/singularity
+	cd ddf-pipeline
+	patch ddf-pipeline/scripts/analyse_logs.py singularity/patches/matplotlib_spectral.patch
+	patch ddf-pipeline/utils/auxcodes.py singularity/patches/double_fits.patch
+	patch ddf-pipeline/utils/get_cat.py singularity/patches/panstarrs.patch
+
 	# moving init.sh because install.sh also writes to that same file
 	mv init.sh scripts/init.lofar.sh
 	bash ddf-pipeline/scripts/install.sh
@@ -48,7 +56,7 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	pip install astropy-healpix emcee pyrap pyregion reproject
 
 	# Requirements not mentioned
-	pip install prettytable
+	pip install prettytable requests
 
 	# Catalogs
 	mkdir DDFCatalogs
