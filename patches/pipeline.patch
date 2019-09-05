@@ -1,0 +1,13 @@
+diff --git a/scripts/pipeline.py b/scripts/pipeline.py
+index 0eee8fb..5d9e97c 100755
+--- a/scripts/pipeline.py
++++ b/scripts/pipeline.py
+@@ -519,6 +519,8 @@ if __name__=='__main__':
+         external_mask='external_mask_ext.fits'
+         make_external_mask(external_mask,'image_dirin_SSD_init.dirty.fits',use_tgss=True,clobber=False,extended_use='bootstrap-mask-high.fits')
+ 
++    full_clearcache(o)
++
+     # Apply phase solutions and image again
+     ddf_image('image_phase1',o['mslist'],cleanmask=external_mask,cleanmode='SSD',ddsols='killms_p1',applysols='P',majorcycles=3,robust=o['image_robust'],colname=colname,peakfactor=0.01,automask=True,automask_threshold=o['thresholds'][1],normalization=o['normalize'][0],apply_weights=o['apply_weights'][1],uvrange=uvrange,use_dicomodel=True,dicomodel_base='image_dirin_SSD_masked',catcher=catcher)
+ 

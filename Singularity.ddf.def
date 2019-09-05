@@ -29,6 +29,9 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 
 	# Install system dependencies
 	yum install -y Cython fpack
+	
+	# Update python tools
+	pip install -U pip setuptools wheel
 
 	# Install ddf-pipeline
 	cd ${INSTALLDIR}
@@ -37,10 +40,11 @@ From: tikk3r/lofar-grid-hpccloud:lofar
 	# Apply patches to ddf-pipeline
 	cd ${INSTALLDIR}
 	git clone https://github.com/tvanhateren/singularity
-	cd ddf-pipeline
 	patch ddf-pipeline/scripts/analyse_logs.py singularity/patches/matplotlib_spectral.patch
-	patch ddf-pipeline/utils/auxcodes.py singularity/patches/double_fits.patch
+	# Patched upstream
+	# patch ddf-pipeline/utils/auxcodes.py singularity/patches/double_fits.patch
 	patch ddf-pipeline/utils/get_cat.py singularity/patches/panstarrs.patch
+	patch ddf-pipeline/scripts/pipeline.py singularity/patches/pipeline.patch
 
 	# moving init.sh because install.sh also writes to that same file
 	mv init.sh scripts/init.lofar.sh
